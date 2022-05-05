@@ -6,6 +6,10 @@ config()
 
 // These are end to end tests and need api key
 describe('Google Places E2E Tests', () => {
+    let apiKey: string
+    beforeAll(()=>{
+        apiKey = process.env.GOOGLE_PLACE_API_KEY!
+    })
     describe('getAutoCompleteDetails', () => {
         it ('returns a promise', () => {
             const res = getAutoCompleteDetails('50 McDougall Street, Milton')
@@ -29,25 +33,25 @@ describe('Google Places E2E Tests', () => {
 
     describe('getPlaceAutocomplete', () => {
         it('can fetch from the autocomplete api', async () => {
-            const res = await getPlaceAutocomplete(process.env.GOOGLE_PLACE_API_KEY, '123 Smith Street')
+            const res = await getPlaceAutocomplete(apiKey, '123 Smith Street')
             expect(res).toHaveLength(5)
         })
 
 
         it('handles no results', async () => {
-            const res = await getPlaceAutocomplete(process.env.GOOGLE_PLACE_API_KEY, 'asfasffasfasafsafs')
+            const res = await getPlaceAutocomplete(apiKey, 'asfasffasfasafsafs')
             expect(res).toStrictEqual([])
         })
 
         it('handles error', async () => {
-            expect(getPlaceAutocomplete(process.env.GOOGLE_PLACE_API_KEY, '')).rejects.toThrow()
+            expect(getPlaceAutocomplete(apiKey, '')).rejects.toThrow()
         })
     })
 
     describe('getPlaceDetails', () => {
 
         it('can fetch details from place api', async () => {
-            const res = await getPlaceDetails(process.env.GOOGLE_PLACE_API_KEY, 'ChIJv4xum6VQkWsRkZTr3S0zvio')
+            const res = await getPlaceDetails(apiKey, 'ChIJv4xum6VQkWsRkZTr3S0zvio')
             expect(res).not.toBeNull()
         })
     })
