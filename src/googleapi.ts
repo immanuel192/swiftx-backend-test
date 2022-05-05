@@ -9,15 +9,16 @@ export async function getPlaceAutocomplete(key: string, address: string) {
             types: 'address'
         }
     })
-    return autocomplete.data.predictions.map((prediction) => {
+    return autocomplete.data.predictions.map((prediction: any) => {
         return {
-            place_id: prediction.place_id,
+            placeId: prediction.place_id,
             description: prediction.description
         }
     })
 }
 
 // https://developers.google.com/maps/documentation/places/web-service/details
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function getPlaceDetails(key: any, placeID: any): Promise<any> {
-
+    return Promise.resolve(null)
 }
