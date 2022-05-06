@@ -8,7 +8,6 @@
     "test": "jest",
     "compile": "tsc",
     "prepare-publish": "npm run compile && cp package.json package-lock.json README.md .npmignore dist/src/",
-    "publish": "set -ex; (cd dist/src && npm publish --dry-run)",
     "audit": "npm audit --production"
   },
   "author": "",
