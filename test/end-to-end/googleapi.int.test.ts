@@ -3,7 +3,6 @@ import { getPlaceAutocomplete, getPlaceDetails } from '../../src/googleapi'
 import { config } from '../../src/config'
 import { ENV_GOOGLE_PLACE_API_KEY } from '../../src/const'
 
-// These are end to end tests and need api key
 describe(suiteName(__filename), () => {
   let apiKey: string
 

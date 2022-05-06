@@ -1,7 +1,6 @@
 import { suiteName, chance } from '../test/utils'
 import { config } from './config'
 
-// These are end to end tests and need api key
 describe(suiteName(__filename), () => {
   it('should return config value for GOOGLE_PLACE_API_KEY', () => {
     const expectedValue = chance.word()

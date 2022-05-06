@@ -3,7 +3,6 @@ import { suiteName } from '../utils'
 // import { getPlaceAutocomplete, getPlaceDetails } from '../src/googleapi'
 import { getAutoCompleteDetails } from '../../src/index'
 
-// These are end to end tests and need api key
 describe(suiteName(__filename), () => {
   describe('getAutoCompleteDetails', () => {
     it('returns a promise', () => {

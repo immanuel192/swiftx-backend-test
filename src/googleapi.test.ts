@@ -3,7 +3,6 @@ import { GooglePlaceApiStatusEnum, GooglePlaceCountry } from './const'
 import { getPlaceAutocomplete, getPlaceDetails } from './googleapi'
 import * as requestService from './requester'
 
-// These are end to end tests and need api key
 describe(suiteName(__filename), () => {
   let requestSpy: jest.SpyInstance
   let key: string

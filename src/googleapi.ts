@@ -74,49 +74,34 @@ export async function getPlaceDetails(options: GetPlaceDetailOption): Promise<Pl
 type ComponentAddressLookupFunction = (addressComponent: PlacesDetailApiResultAddressComponent, placeComponent: PlaceAddressComponent) => void
 const ComponentAddressLookup: Record<PlaceDetailAddressComponentEnum, ComponentAddressLookupFunction> = {
   [PlaceDetailAddressComponentEnum.SUBPREMISE]: (addressComponent, placeComponent) => {
-    if (addressComponent.types.includes(PlaceDetailAddressComponentEnum.SUBPREMISE)) {
-      placeComponent.unit = addressComponent.long_name
-    }
+    placeComponent.unit = addressComponent.long_name
   },
   [PlaceDetailAddressComponentEnum.STREET_NUMBER]: (addressComponent, placeComponent) => {
-    if (addressComponent.types.includes(PlaceDetailAddressComponentEnum.STREET_NUMBER)) {
-      placeComponent.streetNumber = addressComponent.long_name
-    }
+    placeComponent.streetNumber = addressComponent.long_name
   },
   [PlaceDetailAddressComponentEnum.ROUTE]: (addressComponent, placeComponent) => {
-    if (addressComponent.types.includes(PlaceDetailAddressComponentEnum.ROUTE)) {
-      placeComponent.streetName = addressComponent.long_name
-    }
+    placeComponent.streetName = addressComponent.long_name
   },
   [PlaceDetailAddressComponentEnum.LOCALITY]: (addressComponent, placeComponent) => {
-    if (addressComponent.types.includes(PlaceDetailAddressComponentEnum.LOCALITY)) {
-      placeComponent.suburb = addressComponent.long_name
-    }
+    placeComponent.suburb = addressComponent.long_name
   },
   [PlaceDetailAddressComponentEnum.ADMIN_AREA_LEVEL_1]: (addressComponent, placeComponent) => {
-    if (addressComponent.types.includes(PlaceDetailAddressComponentEnum.ADMIN_AREA_LEVEL_1)) {
-      placeComponent.state = addressComponent.long_name
-    }
+    placeComponent.state = addressComponent.long_name
   },
   [PlaceDetailAddressComponentEnum.COUNTRY]: (addressComponent, placeComponent) => {
-    if (addressComponent.types.includes(PlaceDetailAddressComponentEnum.COUNTRY)) {
-      placeComponent.country = addressComponent.long_name
-    }
+    placeComponent.country = addressComponent.long_name
   },
   [PlaceDetailAddressComponentEnum.POSTCODE]: (addressComponent, placeComponent) => {
-    if (addressComponent.types.includes(PlaceDetailAddressComponentEnum.POSTCODE)) {
-      placeComponent.postcode = addressComponent.long_name
-    }
+    placeComponent.postcode = addressComponent.long_name
   },
 }
 
 export const formatPlaceComponent = (placeDetail: PlacesDetailApiResult): PlaceAddressComponent => {
   const addressComponent: PlaceAddressComponent = {}
   for (const component of placeDetail.result.address_components) {
-    Object.values(PlaceDetailAddressComponentEnum)
-      .forEach((c) => {
-        ComponentAddressLookup[c] && ComponentAddressLookup[c](component, addressComponent)
-      })
+    for (const type of component.types) {
+      ComponentAddressLookup[type] && ComponentAddressLookup[type](component, addressComponent)
+    }
   }
 
   return addressComponent

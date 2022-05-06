@@ -2,7 +2,6 @@ import { suiteName, chance } from '../test/utils'
 import axios from 'axios'
 import { request } from './requester'
 
-// These are end to end tests and need api key
 describe(suiteName(__filename), () => {
   let getSpy: jest.SpyInstance
   let url: string

@@ -4,15 +4,15 @@
 - Setup code base with eslint for linting, audit
 - Refactor code (a bit) :), prefer to use arrow function for consistency
 - CI pipeline (using Github Action). It will publish package when merging PR to `main` branch (`dry-run` only, no worry :))
-- End-to-end test and unit test
 - Remove `yarn`, use `npm` instead
+- Include `error code` and `some other useful data` in the error object when throwing.
 
 ## Testing
-- Add end-to-end test
+- Update end-to-end test
 - Add unit test
 
 ## Notice
-- Personally I do not think using the Google API Key to make real request to Google for end-to-end test is the appropriate way. Instead, I would suggest to use https://www.npmjs.com/package/nock instead. The component itself should be isolated.
+- Personally I do not think using the Google API Key to make real request to Google for end-to-end test is the appropriate way. Instead, I would suggest to use https://www.npmjs.com/package/nock. The component itself should be isolated for the end-to-end test.
 
 ## Issues Found
 I found some of the issues in the code as below
@@ -52,8 +52,10 @@ it('can fetch from the autocomplete api', async () => {
 # to install packages
 npm install 
 
-# to run test
+# to run test you need to copy the file .env.example to be .env and put your own key for the config then run
 npm run test
+# alternatively you can
+GOOGLE_PLACE_API_KEY=your-key npm run test
 
 # to check linting
 npm run lint
@@ -64,6 +66,7 @@ npm run audit
 
 ## Something fun that we can think of
 - Use `semver` and `semantic-release` to control the package version and the release process (with git tag) automatically
+- To resolve the place detail, currently we are using `Promise.all`. In the even an address that return too many suggestion, fetching all these detail at the same time may affect the performance of the main thread (the app that use this package). Consider to use `Bluebird.map` with `concurrency` support (http://bluebirdjs.com/docs/api/promise.map.html).
 
 --------
 
