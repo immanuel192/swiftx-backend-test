@@ -16,12 +16,12 @@ export const request = async <T = Record<string, unknown>>(options: RequestOptio
     if (error.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx;
-      throw errCode(new Error(`Error while fetching data from ${options.url}`), 'ERR_GG_PLACE_API_REQUEST_ERROR', {
+      throw errCode(new Error(`Error while fetching data from ${options.url}`), 'GG_PLACE_API_REQUEST_ERROR', {
         data: error.response.data,
         status: error.response.status,
         headers: error.response.headers
       })
     }
-    throw errCode(new Error(`Error while fetching data from ${options.url}`), 'ERR_GG_PLACE_API_REQUEST_FAILED')
+    throw errCode(new Error(`Error while fetching data from ${options.url}`), 'GG_PLACE_API_REQUEST_FAILED')
   }
 }

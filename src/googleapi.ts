@@ -1,6 +1,6 @@
 import errCode from 'err-code'
-import { DEFAULT_COUNTRY, GG_PLACE_STATUS_OK } from './const'
-import { PlaceAutocompleteApiResult, PlacesAutoComplete, PlaceSearchingOption, PlacesDetailApiResult, PlaceDetailAddressComponentEnum, PlaceAddressComponent, PlacesDetailApiResultAddressComponent } from './interfaces'
+import { DEFAULT_COUNTRY, GooglePlaceApiStatusEnum, PlaceDetailAddressComponentEnum } from './const'
+import { PlaceAutocompleteApiResult, PlacesAutoComplete, PlaceSearchingOption, PlacesDetailApiResult, PlaceAddressComponent, PlacesDetailApiResultAddressComponent } from './interfaces'
 import { request } from './requester'
 
 interface GetPlaceAutoCompleteOption extends PlaceSearchingOption {
@@ -26,9 +26,14 @@ export const getPlaceAutocomplete = async (options: GetPlaceAutoCompleteOption):
     }
   })
 
-  if (autoComplete.status !== GG_PLACE_STATUS_OK) {
+  if ([GooglePlaceApiStatusEnum.ZERO_RESULTS].includes(autoComplete.status as GooglePlaceApiStatusEnum)) {
+    return []
+  }
+
+  if (autoComplete.status !== GooglePlaceApiStatusEnum.OK) {
     throw errCode(new Error(`Failed to fetch auto complete for the address ${options.address}`), 'ERR_GG_PLACE_API_AUTOCOMPLETE_FAILED', {
       address: options.address,
+      status: autoComplete.status
     })
   }
 
@@ -41,7 +46,7 @@ export const getPlaceAutocomplete = async (options: GetPlaceAutoCompleteOption):
 }
 
 // https://developers.google.com/maps/documentation/places/web-service/details
-export async function getPlaceDetails(options: GetPlaceDetailOption): Promise<PlacesDetailApiResult> {
+export async function getPlaceDetails(options: GetPlaceDetailOption): Promise<PlacesDetailApiResult | null> {
   const placeDetail = await request<PlacesDetailApiResult>({
     url: 'https://maps.googleapis.com/maps/api/place/details/json',
     params: {
@@ -51,10 +56,15 @@ export async function getPlaceDetails(options: GetPlaceDetailOption): Promise<Pl
       fields: 'address_components,place_id,formatted_address,geometry',
     }
   })
-  // @todo to handle status https://developers.google.com/maps/documentation/places/web-service/details#PlacesDetailsStatus
-  if (placeDetail.status !== GG_PLACE_STATUS_OK) {
+
+  if ([GooglePlaceApiStatusEnum.ZERO_RESULTS].includes(placeDetail.status as GooglePlaceApiStatusEnum)) {
+    return null
+  }
+
+  if (placeDetail.status !== GooglePlaceApiStatusEnum.OK) {
     throw errCode(new Error(`Failed to fetch place detail of place id ${options.placeId}`), 'ERR_GG_PLACE_DETAIL_API_FAILED', {
       placeId: options.placeId,
+      status: placeDetail.status
     })
   }
 

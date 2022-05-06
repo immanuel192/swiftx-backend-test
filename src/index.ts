@@ -1,9 +1,10 @@
 import { formatPlaceComponent, getPlaceAutocomplete, getPlaceDetails } from './googleapi'
 import { config } from './config'
 import { ENV_GOOGLE_PLACE_API_KEY } from './const'
-import { PlaceSearchingOption, Places } from './interfaces'
+import { PlaceSearchingOption, Places, PlacesDetailApiResult } from './interfaces'
 
-export { GooglePlaceCountry, Places } from './interfaces'
+export { Places, PlaceAddressComponent } from './interfaces'
+export { GooglePlaceCountry } from './const'
 
 export async function getAutoCompleteDetails(address: string, options: PlaceSearchingOption = {}): Promise<Places[]> {
   const apiKey = config(ENV_GOOGLE_PLACE_API_KEY)
@@ -14,19 +15,22 @@ export async function getAutoCompleteDetails(address: string, options: PlaceSear
     ...options
   })
 
-  const details = await Promise.all(res.map(place => getPlaceDetails({ key: apiKey, placeId: place.placeId })))
+  const details = (await Promise.all(res.map(place => getPlaceDetails({ key: apiKey, placeId: place.placeId })))) as PlacesDetailApiResult[]
 
-  const places: Places[] = details.map((placeDetail) => ({
-    address: placeDetail.result.formatted_address,
-    placeId: placeDetail.result.place_id,
-    geometry: {
-      location: {
-        lat: placeDetail.result.geometry.location.lat,
-        lng: placeDetail.result.geometry.location.lng
+  const places = details
+    .map((placeDetail) => {
+      return {
+        address: placeDetail.result.formatted_address,
+        placeId: placeDetail.result.place_id,
+        geometry: {
+          location: {
+            lat: placeDetail.result.geometry.location.lat,
+            lng: placeDetail.result.geometry.location.lng
+          }
+        },
+        component: formatPlaceComponent(placeDetail),
       }
-    },
-    components: formatPlaceComponent(placeDetail),
-  }))
+    })
 
   // loop over and get details and map results
   return places

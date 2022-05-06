@@ -22,7 +22,7 @@ describe(suiteName(__filename), () => {
               lng: 153.0063878
             }
           },
-          components: {
+          component: {
             streetNumber: '50',
             streetName: 'McDougall Street',
             suburb: 'Milton',
@@ -39,7 +39,7 @@ describe(suiteName(__filename), () => {
       await expect(getAutoCompleteDetails('1/12 Hythe St')).resolves.toEqual(expect.arrayContaining([
         {
           address: '1/12 Hythe St, Mount Druitt NSW 2770, Australia',
-          components: {
+          component: {
             country: 'Australia',
             postcode: '2770',
             state: 'New South Wales',
@@ -58,7 +58,7 @@ describe(suiteName(__filename), () => {
         },
         {
           address: '1/12 Hythe St, Kamerunga QLD 4870, Australia',
-          components: {
+          component: {
             country: 'Australia',
             postcode: '4870',
             state: 'Queensland',
@@ -77,7 +77,7 @@ describe(suiteName(__filename), () => {
         },
         {
           address: '1/12 Hythe St, Mansfield QLD 4122, Australia',
-          components: {
+          component: {
             country: 'Australia',
             postcode: '4122',
             state: 'Queensland',
@@ -96,7 +96,7 @@ describe(suiteName(__filename), () => {
         },
         {
           address: 'Hythe St, Miami QLD 4220, Australia',
-          components: {
+          component: {
             country: 'Australia',
             postcode: '4220',
             state: 'Queensland',
@@ -113,7 +113,7 @@ describe(suiteName(__filename), () => {
         },
         {
           address: '1/12 Hythe St, Croydon SA 5008, Australia',
-          components: {
+          component: {
             country: 'Australia',
             postcode: '5008',
             state: 'South Australia',

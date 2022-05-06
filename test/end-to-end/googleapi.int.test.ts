@@ -1,4 +1,3 @@
-import { describe } from '@jest/globals'
 import { suiteName } from '../utils'
 import { getPlaceAutocomplete, getPlaceDetails } from '../../src/googleapi'
 import { config } from '../../src/config'
@@ -20,11 +19,11 @@ describe(suiteName(__filename), () => {
       })).resolves.toHaveLength(5)
     })
 
-    it('handles error', async () => {
+    it('handles zero result', async () => {
       await expect(getPlaceAutocomplete({
         key: apiKey,
-        address: 'fsdffsfsafs',
-      })).rejects.toThrow()
+        address: 'trung, NSW',
+      })).resolves.toStrictEqual([])
     })
   })
 

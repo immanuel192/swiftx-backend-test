@@ -1,3 +1,70 @@
+# Information 
+## Changes
+- Switch to use purely typescript but babel.
+- Setup code base with eslint for linting, audit
+- Refactor code (a bit) :), prefer to use arrow function for consistency
+- CI pipeline (using Github Action). It will publish package when merging PR to `main` branch (`dry-run` only, no worry :))
+- End-to-end test and unit test
+- Remove `yarn`, use `npm` instead
+
+## Testing
+- Add end-to-end test
+- Add unit test
+
+## Notice
+- Personally I do not think using the Google API Key to make real request to Google for end-to-end test is the appropriate way. Instead, I would suggest to use https://www.npmjs.com/package/nock instead. The component itself should be isolated.
+
+## Issues Found
+I found some of the issues in the code as below
+- No `await` when calling a function that return a Promise
+```ts
+// In the index.ts file, line 7
+const res = getPlaceAutocomplete(process.env.GOOGLE_PLACE_API_KEY, address).then(async (autocompleteResults) => {
+  const res = []
+  return res
+})
+```
+- Wrong logic assertion
+```ts
+// places.test.ts line 15
+it('can fetch from the autocomplete api', async () => {
+  const res = await getAutoCompleteDetails('50 McDougall Street, Milton')
+  const firstRes = res[0];
+  expect(firstRes).toHaveProperty('suggestion')
+  // the `components` is the breakdown of each suggestion. Not sure why it should be the same level with `suggestion`
+  // also `components` stands an array but here is objection assertion
+  expect(firstRes).toHaveProperty('components')
+  expect(firstRes.components).toHaveProperty('unit')
+  expect(firstRes.components).toHaveProperty('street_number')
+  expect(firstRes.components).toHaveProperty('street_name')
+  expect(firstRes.components).toHaveProperty('suburb')
+  expect(firstRes.components).toHaveProperty('state')
+  expect(firstRes.components).toHaveProperty('postcode')
+  expect(firstRes.components).toHaveProperty('country')
+})
+```
+
+## Code coverage
+![](./images/coverage.png)
+
+## Setup in your local
+```sh
+# to install packages
+npm install 
+
+# to run test
+npm run test
+
+# to check linting
+npm run lint
+
+# to check audit (production only)
+npm run audit
+```
+
+
+--------
+
 Scenario:
 =========
 
