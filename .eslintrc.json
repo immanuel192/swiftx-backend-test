@@ -79,6 +79,7 @@
         "ignoreStrings": true,
         "ignoreTemplateLiterals": true
       }
-    ]
+    ],
+    "@typescript-eslint/no-explicit-any": "off"
   }
 }

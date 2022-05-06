@@ -8,6 +8,7 @@ on:
 
 env:
   GOOGLE_PLACE_API_KEY: ${{ secrets.GG_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
 jobs:
   build:
@@ -26,5 +27,18 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
       - run: npm ci
-      - run: npm run lint
-      - run: npm run test
+      - name: "Lint"
+        run: npm run lint
+      - name: "Test"
+        run: npm run test
+      - name: "Audit"
+        run: npm run audit
+
+      - name: Wait For Other Pipelines
+        uses: otto-de/github-actions-wait@v1.0
+        with:
+          step-name: "Audit"
+      - name: "test"
+        run: npm run audit
+      - name: "test"
+        run: npm run audit
