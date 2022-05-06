@@ -62,6 +62,8 @@ npm run lint
 npm run audit
 ```
 
+## Something fun that we can think of
+- Use `semver` and `semantic-release` to control the package version and the release process (with git tag) automatically
 
 --------
 
