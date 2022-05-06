@@ -33,6 +33,8 @@ jobs:
         run: npm run test
       - name: "Audit"
         run: npm run audit
+      - name: "Compile"
+        run: npm run compile
       - name: Publish
         if: github.ref == 'refs/heads/main'
         run: npm run publish
