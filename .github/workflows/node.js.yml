@@ -6,6 +6,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+env:
+  GOOGLE_PLACE_API_KEY: ${{ secrets.GG_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,5 +27,12 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
       - run: npm ci
-      - run: npm run lint
-      - run: npm run test
+      - name: "Lint"
+        run: npm run lint
+      - name: "Test"
+        run: npm run test
+      - name: "Audit"
+        run: npm run audit
+      - name: Publish
+        if: github.ref == 'refs/heads/main'
+        run: npm run publish

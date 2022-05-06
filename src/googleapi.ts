@@ -1,15 +1,26 @@
-import axios from 'axios'
+import { DEFAULT_COUNTRY } from './const'
+import { PlaceAutocompleteResult, PlacesAutoComplete, PlaceSearchingOption } from './interfaces'
+import { request } from './requester'
+
+interface GetPlaceAutoCompleteOption extends PlaceSearchingOption {
+    key: string
+    address: string
+}
 
 // https://developers.google.com/places/web-service/autocomplete
-export async function getPlaceAutocomplete(key: string, address: string) {
-    const autocomplete = await axios.get('https://maps.googleapis.com/maps/api/place/autocomplete/json', {
+export const getPlaceAutocomplete = async (options: GetPlaceAutoCompleteOption): Promise<PlacesAutoComplete[]> => {
+    const autoComplete = await request<PlaceAutocompleteResult>({
+        url: 'https://maps.googleapis.com/maps/api/place/autocomplete/json',
         params: {
-            input: address,
-            key: key,
-            types: 'address'
+            input: options.address,
+            key: options.key,
+            types: 'address',
+            components: (options?.country && options.country.length > 0) ?
+                options.country.map(c => `country:${c}`).join('|') : DEFAULT_COUNTRY
         }
     })
-    return autocomplete.data.predictions.map((prediction: any) => {
+
+    return autoComplete.predictions.map((prediction) => {
         return {
             placeId: prediction.place_id,
             description: prediction.description

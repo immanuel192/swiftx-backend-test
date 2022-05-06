@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint . --ext .ts",
-    "test": "jest --coverage",
+    "test": "jest",
     "compile": "tsc",
-    "publish": "exit 1",
+    "prepare-publish": "npm run compile && cp package.json package-lock.json README.md .npmignore dist/src/",
+    "publish": "set -ex; (cd dist/src && npm publish --dry-run)",
     "audit": "npm audit --production"
   },
   "author": "",
@@ -15,6 +16,7 @@
   "devDependencies": {
     "@types/jest": "^26.0.20",
     "@types/node": "^15.3.1",
+    "@types/err-code": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "eslint": "^7.32.0",
@@ -29,6 +31,7 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "err-code": "^3.0.1"
   }
 }
