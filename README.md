@@ -18,7 +18,6 @@ Resources:
 
 Autocomplete Documentation: https://developers.google.com/maps/documentation/places/web-service/autocomplete
 Place Documentation: https://developers.google.com/maps/documentation/places/web-service/details
-API Key: AIzaSyAl47RX-oVJT7QssjxxJY4g-HI45q1I10w
 
 Install:
 ========
